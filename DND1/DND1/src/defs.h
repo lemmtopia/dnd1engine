@@ -10,6 +10,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <SDL3/SDL.h>
+#include <GL/glew.h>
+
 #define PI 3.1415
 
 typedef uint8_t u8;

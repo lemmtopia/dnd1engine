@@ -5,9 +5,12 @@
 	Copyright (C) 2024-2025 Gabriel Grigoleto Cunha
 */
 #include "window.h"
+#include "renderer.h"
 
 SDL_Window* window;
 SDL_GLContext gl_context;
+
+extern renderer_t global_renderer;
 
 boolean initialize_window(void) {
 	if (!SDL_Init(SDL_INIT_VIDEO)) { // now 0 is failure, bitches
@@ -49,7 +52,13 @@ boolean initialize_window(void) {
 		return FALSE;
 	}
 
+	if (glewInit() != GLEW_OK) {
+		return FALSE;
+	}
+
 	SDL_GL_MakeCurrent(window, gl_context);
+
+	renderer_init(&global_renderer);
 
 	return TRUE;
 }
