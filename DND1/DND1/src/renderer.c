@@ -158,4 +158,15 @@ void renderer_set_uniforms(renderer_t renderer) {
         1,
         GL_FALSE,
         renderer.perspective);
+
+    float offset_arr[] = { renderer.offset.x, renderer.offset.y, renderer.offset.z };
+
+    glUniform3fv(
+        glGetUniformLocation(renderer.sh_program, "u_offset"),
+        1,
+        offset_arr);
+}
+
+void renderer_set_offset(renderer_t* renderer, vec3_t new_offset) {
+    renderer->offset = new_offset;
 }

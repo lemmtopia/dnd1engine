@@ -12,7 +12,7 @@ SDL_GLContext gl_context;
 
 extern renderer_t global_renderer;
 
-boolean initialize_window(void) {
+boolean window_initialize(void) {
 	if (!SDL_Init(SDL_INIT_VIDEO)) { // now 0 is failure, bitches
 		return FALSE;
 	}
@@ -70,13 +70,13 @@ boolean window_should_close(void) {
 	return ev.type == SDL_EVENT_QUIT;
 }
 
-void destroy_window(void) {
+void window_destroy(void) {
 	SDL_GL_DestroyContext(gl_context);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
 
-void swap_window_buffers(void) {
+void window_swap_buffers(void) {
 	// Update window by swapping buffers
 	SDL_GL_SwapWindow(window);
 }

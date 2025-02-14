@@ -15,10 +15,10 @@
 #define WIDTH 800
 #define HEIGHT 600
 
-boolean initialize_window(void);
+boolean window_initialize(void);
 boolean window_should_close(void);
-void destroy_window(void);
+void window_destroy(void);
 
-void swap_window_buffers(void);
+void window_swap_buffers(void);
 
 #endif

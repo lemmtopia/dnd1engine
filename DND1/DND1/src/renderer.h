@@ -27,6 +27,7 @@ typedef struct renderer_t {
     GLuint sh_program;
 
     mat4_t model, view, perspective;
+    vec3_t offset;
 
     render_vertex_t vertices[MAX_VERTICES];
     u32 triangle_count;
@@ -43,5 +44,7 @@ void renderer_clear(void);
 void renderer_set_clear_color(float r, float g, float b);
 void renderer_draw_arrays(renderer_t renderer);
 void renderer_set_uniforms(renderer_t renderer);
+
+void renderer_set_offset(renderer_t* renderer, vec3_t new_offset);
 
 #endif

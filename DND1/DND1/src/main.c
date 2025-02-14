@@ -15,10 +15,12 @@ boolean is_running = FALSE;
 
 float time;
 
+vec3_t my_offset = { 0, 0, 0 };
+
 int last_ticks = 0;
 float dt;
 
-void initialize_game(void) {
+void game_initialize(void) {
 	renderer_set_clear_color(0.1, 0.2, 0.3);
 
 	render_vertex_t v[] = {
@@ -42,7 +44,7 @@ void initialize_game(void) {
 	last_ticks = SDL_GetTicks();
 }
 
-void update_game(void) {
+void game_update(void) {
 	dt = (SDL_GetTicks() - last_ticks) / 1000.0f;
 	last_ticks = SDL_GetTicks();
 
@@ -58,57 +60,42 @@ void update_game(void) {
 		global_renderer.model[i] = mat[i];
 	}
 
+	const u8* kb_state = SDL_GetKeyboardState(0);
+
+	my_offset.x += dt * (kb_state[SDL_SCANCODE_D] - kb_state[SDL_SCANCODE_A]);
+	my_offset.y += dt * (kb_state[SDL_SCANCODE_W] - kb_state[SDL_SCANCODE_S]);
+
+	renderer_set_offset(&global_renderer, my_offset);
+
 	utils_free(mat);
 	utils_free(m0);
 	utils_free(m1);
 	utils_free(m2);
 }
 
-void render_game(void) {
-	//SDL_RenderClear(renderer);
-
-	//char* pixels;
-	//int pitch;
-
-	//SDL_LockTexture(framebuffer, 0, (void**)&pixels, &pitch);
-
-	//// clear screen
-	//for (int i = 0; i < WIDTH * HEIGHT; i++) {
-	//	char* pixel = pixels + (i * 4);
-
-	//	*pixel = 0xff;
-	//	*(pixel + 1) = 0x00;
-	//	*(pixel + 2) = 0xff;
-	//	*(pixel + 3) = 0xff;
-	//}
-
-	//SDL_UnlockTexture(framebuffer);
-
-	//SDL_RenderTexture(renderer, framebuffer, NULL, NULL);
-	//SDL_RenderPresent(renderer);
-
+void game_render(void) {
 	// Set clear color
 	renderer_clear();
 
 	renderer_draw_arrays(global_renderer);
 
-	swap_window_buffers();
+	window_swap_buffers();
 }
 
 int main(int argc, char* argv[]) {
-	is_running = initialize_window();
+	is_running = window_initialize();
 
 	if (is_running) {
 		// mainloop
-		initialize_game();
+		game_initialize();
 		while (is_running) {
-			update_game();
-			render_game();
+			game_update();
+			game_render();
 
 			is_running = !window_should_close();
 		}
 
-		destroy_window(); // quit only if we have entered
+		window_destroy(); // quit only if we have entered
 	}
 
 	return 0;
